@@ -76,27 +76,16 @@ class VideoPlaybackPlayerViewController: AVPlayerViewController {
     }
     
     @objc func playbackSpeedButtonTapped(sender: VideoPlaybackRateButton) {
-        let currentRate = VideoPlayback.shared.playbackRate
-        var newRate: PlaybackRate
+        let allRates = PlaybackRate.allCases
 
-        switch currentRate {
-        case .slow:
-            newRate = .normal
-            break
-        case .normal:
-            newRate = .fast
-            break
-        case .fast:
-            newRate = .fastest
-            break
-        case .fastest:
-            newRate = .slow
-            break
-        }
+        guard let currentRateIndex = allRates.firstIndex(of: VideoPlayback.shared.playbackRate) else { return }
+        
+        let nextRateIndex = (currentRateIndex + 1) % allRates.count
+        let newRate = allRates[nextRateIndex]
         
         VideoPlayback.shared.playbackRate = newRate
-        sender.setTitle(playbackRate: VideoPlayback.shared.playbackRate)
-        self.player?.rate = VideoPlayback.shared.playbackRate.val
+        sender.setTitle(playbackRate: newRate)
+        self.player?.rate = newRate.val
     }
     
     override func viewDidAppear(_ animated: Bool) {

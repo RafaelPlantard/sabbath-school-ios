@@ -23,17 +23,21 @@
 import AVFoundation
 import SwiftAudio
 
-enum PlaybackRate {
+enum PlaybackRate: CaseIterable {
     case slow
     case normal
+    case slightlyNormal
     case fast
+    case slightlyFast
     case fastest
-    
+
     var val: Float {
         switch self {
         case .slow: return 0.75
         case .normal: return 1
+        case .slightlyNormal: return 1.25
         case .fast: return 1.5
+        case .slightlyFast: return 1.75
         case .fastest: return 2
         }
     }
@@ -42,7 +46,9 @@ enum PlaybackRate {
         switch self {
         case .slow: return "¾×"
         case .normal: return "1×"
+        case .slightlyNormal: return "1¼×"
         case .fast: return "1½×"
+        case .slightlyFast: return "1¾×"
         case .fastest: return "2×"
         }
     }

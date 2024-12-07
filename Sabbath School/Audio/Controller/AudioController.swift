@@ -129,29 +129,15 @@ class AudioController: ASDKViewController<ASDisplayNode> {
     }
     
     @objc func didPressRate(_ sender: ASTextNode) {
-        let currentRate = AudioPlayback.rate
-        var newRate: PlaybackRate
+        let rates: [PlaybackRate] = PlaybackRate.allCases
 
-        switch currentRate {
-        case .slow:
-            newRate = .normal
-            break
-        case .normal:
-            newRate = .fast
-            break
-        case .fast:
-            newRate = .fastest
-            break
-        case .fastest:
-            newRate = .slow
-            break
-        }
+        guard let currentRateIndex = rates.firstIndex(of: AudioPlayback.rate) else { return }
+        
+        let nextRateIndex = (currentRateIndex + 1) % rates.count
+        let newRate = rates[nextRateIndex]
         
         AudioPlayback.rate = newRate
-        
-        if AudioPlayback.shared.rate > 0 {
-            AudioPlayback.shared.rate = AudioPlayback.rate.val
-        }
+        AudioPlayback.shared.rate = newRate.val
         
         updateRate(rate: newRate)
     }
